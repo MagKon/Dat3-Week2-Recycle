@@ -1,5 +1,7 @@
 package dat3.config;
 
+import dat3.model.Driver;
+import dat3.model.WasteTruck;
 import jakarta.persistence.EntityManagerFactory;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
@@ -14,7 +16,7 @@ import java.util.Properties;
 public class HibernateConfig {
 
     private static EntityManagerFactory entityManagerFactory;
-    private static String databaseName = "GLS";
+    private static String databaseName = "Recycle";
 
     public HibernateConfig(String databaseName) {
         HibernateConfig.databaseName = databaseName;
@@ -61,6 +63,8 @@ public class HibernateConfig {
 
     private static void getAnnotationConfiguration(Configuration configuration) {
         // add annotated classes
+        configuration.addAnnotatedClass(Driver.class);
+        configuration.addAnnotatedClass(WasteTruck.class);
     }
 
     public static EntityManagerFactory getEntityManagerFactoryConfig() {
