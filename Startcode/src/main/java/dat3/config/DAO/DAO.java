@@ -82,10 +82,20 @@ abstract class ADAO<T> implements IDAO<T> { // TODO: Add tcf (try, catch, final)
 
     public void truncate(Class<T> tClass) {
         try (EntityManager entityManager = HibernateConfig.getEntityManagerFactoryConfig().createEntityManager()) {
+            // Truncate table
             entityManager.getTransaction().begin();
 
             String tableName = tClass.getSimpleName();
             String sql = "TRUNCATE TABLE " + tableName + " RESTART IDENTITY CASCADE"; // CASCADE drops dependent objects
+
+            entityManager.createNativeQuery(sql).executeUpdate();
+
+            entityManager.getTransaction().commit();
+
+            // Restart sequence
+            entityManager.getTransaction().begin();
+
+            sql = "ALTER SEQUENCE " + tableName + "_id_seq RESTART WITH 1";
 
             entityManager.createNativeQuery(sql).executeUpdate();
 
